@@ -1,0 +1,26 @@
+[GeneralInformation]: classification: hodoku easy
+[GeneralInformation]: 1000 sudokus loaded.
+[GeneralInformation]: Solved 1000 sudokus
+[GeneralInformation]: Couldn´t solve 0 sudokus
+
+[GeneralInformation]: classification: hodoku middle
+[GeneralInformation]: 1000 sudokus loaded.
+[GeneralInformation]: Solved 1000 sudokus
+[GeneralInformation]: Couldn´t solve 0 sudokus
+
+[GeneralInformation]: classification: hodoku hard
+[GeneralInformation]: 1000 sudokus loaded.
+[GeneralInformation]: Solved 799 sudokus
+[GeneralInformation]: Couldn´t solve 201 sudokus
+
+[GeneralInformation]: classification: hodoku unfair
+[GeneralInformation]: 1000 sudokus loaded.
+[GeneralInformation]: Solved 97 sudokus
+[GeneralInformation]: Couldn´t solve 903 sudokus
+
+[GeneralInformation]: classification: hodoku extreme
+[GeneralInformation]: 1000 sudokus loaded.
+[GeneralInformation]: Solved 13 sudokus
+[GeneralInformation]: Couldn´t solve 987 sudokus
+
+[GeneralInformation]: Wrote to arff file

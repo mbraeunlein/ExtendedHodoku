@@ -1,0 +1,8 @@
+   a   b   c   d   e   <-- classified as
+ 985   0  15   0   0 |   a = HodokuEasy
+   0 950  50   0   0 |   b = HodokuMiddle
+   1 103 380 236 280 |   c = HodokuHard
+   0   7  56 276 661 |   d = HodokuUnfair
+   0   1  11 133 855 |   e = HodokuExtreme
+
+0.708     0.689

@@ -1,0 +1,8 @@
+   a   b   c   d   e   <-- classified as
+ 1000   0   0   0   0|   a = hdkEasy
+   0 1000   0   0   0|   b = hdkMiddle
+   6  10 800 116  68 |   c = hdkHard
+   2   4 202 468 324 |   d = hdkUnfair
+   1   0  58 352 589 |   e = hdkExtreme
+
+0.766		0.771

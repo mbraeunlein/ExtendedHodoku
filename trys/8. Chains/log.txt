@@ -1,0 +1,28 @@
+Dez 04, 2013 10:17:21 AM sudoku.Options readOptions
+Information: Reading options from C:\Users\Michael\AppData\Local\Temp\hodoku.hcfg
+[GeneralInformation]: classification: hodoku easy
+[GeneralInformation]: 1000 sudokus loaded.
+[GeneralInformation]: Solved 1000 sudokus
+[GeneralInformation]: Couldn´t solve 0 sudokus
+
+[GeneralInformation]: classification: hodoku middle
+[GeneralInformation]: 1000 sudokus loaded.
+[GeneralInformation]: Solved 1000 sudokus
+[GeneralInformation]: Couldn´t solve 0 sudokus
+
+[GeneralInformation]: classification: hodoku hard
+[GeneralInformation]: 1000 sudokus loaded.
+[GeneralInformation]: Solved 977 sudokus
+[GeneralInformation]: Couldn´t solve 23 sudokus
+
+[GeneralInformation]: classification: hodoku unfair
+[GeneralInformation]: 1000 sudokus loaded.
+[GeneralInformation]: Solved 617 sudokus
+[GeneralInformation]: Couldn´t solve 383 sudokus
+
+[GeneralInformation]: classification: hodoku extreme
+[GeneralInformation]: 1000 sudokus loaded.
+[GeneralInformation]: Solved 289 sudokus
+[GeneralInformation]: Couldn´t solve 711 sudokus
+
+[GeneralInformation]: Wrote to arff file

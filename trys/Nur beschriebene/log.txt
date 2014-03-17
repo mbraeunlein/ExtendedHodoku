@@ -1,0 +1,29 @@
+Mrz 12, 2014 11:39:39 PM sudoku.Options readOptions
+Information: Reading options from C:\Users\Michael\AppData\Local\Temp\hodoku.hcfg
+[GeneralInformation]: classification: hodoku easy
+[GeneralInformation]: 1000 sudokus loaded.
+[GeneralInformation]: Solved 1000 sudokus
+[GeneralInformation]: Couldn´t solve 0 sudokus
+
+[GeneralInformation]: classification: hodoku middle
+[GeneralInformation]: 1000 sudokus loaded.
+[GeneralInformation]: Solved 1000 sudokus
+[GeneralInformation]: Couldn´t solve 0 sudokus
+
+[GeneralInformation]: classification: hodoku hard
+[GeneralInformation]: 1000 sudokus loaded.
+[GeneralInformation]: Solved 998 sudokus
+[GeneralInformation]: Couldn´t solve 2 sudokus
+
+[GeneralInformation]: classification: hodoku unfair
+[GeneralInformation]: 1000 sudokus loaded.
+[GeneralInformation]: Solved 988 sudokus
+[GeneralInformation]: Couldn´t solve 12 sudokus
+
+[GeneralInformation]: classification: hodoku extreme
+[GeneralInformation]: 1000 sudokus loaded.
+[Error]: ALS Argument Exception
+[GeneralInformation]: Solved 884 sudokus
+[GeneralInformation]: Couldn´t solve 116 sudokus
+
+[GeneralInformation]: Wrote to arff file
