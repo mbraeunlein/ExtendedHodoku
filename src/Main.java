@@ -5,54 +5,115 @@ import io.arffWriter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import analyze.Analyzer;
 import model.Classification;
 import model.FeatureVector;
 import model.Sudoku;
-import solver.SudokuStepFinder;
 import sudoku.*;
 
 public class Main {
-	// lists with the computed feature vectors
-	static ArrayList<FeatureVector> hodokuEasyVectors = new ArrayList<FeatureVector>();
-	static ArrayList<FeatureVector> hodokuMiddleVectors = new ArrayList<FeatureVector>();
-	static ArrayList<FeatureVector> hodokuHardVectors = new ArrayList<FeatureVector>();
-	static ArrayList<FeatureVector> hodokuUnfairVectors = new ArrayList<FeatureVector>();
-	static ArrayList<FeatureVector> hodokuExtremeVectors = new ArrayList<FeatureVector>();
+	// maps class names to a list of computed featurevectors
+	static HashMap<String, ArrayList<FeatureVector>> classificatedTrainVectors = new HashMap<String, ArrayList<FeatureVector>>();
+	static HashMap<String, ArrayList<FeatureVector>> classificatedTestVectors = new HashMap<String, ArrayList<FeatureVector>>();
+	// maps class names to a list of train sudokus
+	static HashMap<String, ArrayList<Sudoku2>> trainSudokus = new HashMap<String, ArrayList<Sudoku2>>();
+	// maps class names to a list of test sudokus
+	static HashMap<String, ArrayList<Sudoku2>> testSudokus = new HashMap<String, ArrayList<Sudoku2>>();
 
-	static ArrayList<FeatureVector> soEinDingSehrEinfach = new ArrayList<FeatureVector>();
-	static ArrayList<FeatureVector> soEinDingEinfach = new ArrayList<FeatureVector>();
-	static ArrayList<FeatureVector> soEinDingStandard = new ArrayList<FeatureVector>();
-	static ArrayList<FeatureVector> soEinDingModerat = new ArrayList<FeatureVector>();
-	static ArrayList<FeatureVector> soEinDingAnspruchsvoll = new ArrayList<FeatureVector>();
-	static ArrayList<FeatureVector> soEinDingSehrAnspruchsvoll = new ArrayList<FeatureVector>();
-	static ArrayList<FeatureVector> soEinDingTeuflisch = new ArrayList<FeatureVector>();
-
-	static HashMap<Classification, ArrayList<FeatureVector>> classificatedVectors = new HashMap<Classification, ArrayList<FeatureVector>>();
-
-	static String Hodoku = "hodoku.arff";
-	static String SoEinDing = "soeinding.arff";
-	
 	public static void main(String args[]) throws Exception {
+		// configure loffer
 		Logger.addLogLevel(LogLevel.GeneralInformation);
 		Logger.addLogLevel(LogLevel.Error);
-		// Logger.addLogLevel(LogLevel.SolvingMethods);
-
-		// sr = new SudokuReader("sudokus.txt");
-		// Sudoku2 sudoku = sr.read().get(0);
-		// SudokuStepFinder sf = new SudokuStepFinder();
-		// List<SolutionStep> steps = sf.getAllWings(sudoku);
-		// System.out.println(steps.get(0).getStepName());
+		Logger.addLogLevel(LogLevel.Classification);
 		
-		//Hodoku();
-		//SoEinDing();
+		// read the mode
+		String mode = "";
+		try {
+			mode = args[0];
+		} catch (Exception e) {
+			Logger.log(LogLevel.Error, "please put in a mode (cross, test, map)");
+			System.exit(-1);
+		}
+
+		
+		
+		// load train sudokus (train sudokus always have to be loaded no matter what mode)
+		SudokuReader sr = new SudokuReader();
+		try {
+			trainSudokus = sr.read(args[1]);
+		} catch(Exception e) {
+			Logger.log(LogLevel.Error, "please provide a filename for training data, has to be in subfolder sudokus");
+			System.exit(-1);
+		}
+		
+		// extract feature vectors
+		for (String key : trainSudokus.keySet()) {
+			ArrayList<Sudoku2> sudokus = trainSudokus.get(key);
+			Logger.log(LogLevel.GeneralInformation, "Solving " + sudokus.size() + " sudokus of " + key);
+			classificatedTrainVectors.put(key, getFeatureVectors(sudokus));
+		}
+		
+		// write the feature vectors to an .arff file for possible later user processing
+		arffWriter aw = new arffWriter(args[1].replace(".txt", ".arff"));
+		aw.writeToFile(classificatedTrainVectors);
 		
 		Analyzer analyzer = new Analyzer();
-		analyzer.loadFile(Hodoku, SoEinDing);
-		analyzer.mapClasses();
 		
+		// analyze the data depending on the mode
+		switch (mode) {
+		case "cross":
+			analyzer.crossValidation(args[1].replace(".txt", ".arff"));
+			System.exit(0);
+			break;
+		case "test":
+			try {
+				// load test file
+				testSudokus = sr.read(args[2]);
+				
+				// extract feature vectors
+				for (String key : testSudokus.keySet()) {
+					ArrayList<Sudoku2> sudokus = testSudokus.get(key);
+					Logger.log(LogLevel.GeneralInformation, "Solving " + sudokus.size() + " sudokus of " + key);
+					classificatedTestVectors.put(key, getFeatureVectors(sudokus));
+				}
+				
+				// write the feature vectors to an .arff file for possible later user processing
+				aw = new arffWriter(args[2].replace(".txt", ".arff"));
+				aw.writeToFile(classificatedTrainVectors);
+				
+				analyzer.test(args[1].replace(".txt", ".arff"), args[2].replace(".txt", ".arff"));
+			} catch(Exception e) {
+				Logger.log(LogLevel.Error, "please provide a filename for test data, has to be in subfolder sudokus");
+				System.exit(-1);
+			}
+			
+			break;
+		case "map":
+			try {
+				// load test file
+				testSudokus = sr.read(args[2]);
+				/*
+				// extract feature vectors
+				for (String key : testSudokus.keySet()) {
+					ArrayList<Sudoku2> sudokus = testSudokus.get(key);
+					Logger.log(LogLevel.GeneralInformation, "Solving " + sudokus.size() + " sudokus of " + key);
+					classificatedTestVectors.put(key, getFeatureVectors(sudokus));
+				}
+				
+				// write the feature vectors to an .arff file for possible later user processing
+				aw = new arffWriter(args[2].replace(".txt", ".arff"));
+				aw.writeToFile(classificatedTestVectors);*/
+				
+				analyzer.mapClasses(args[2].replace(".txt", ".arff"), args[1].replace(".txt", ".arff"));
+			} catch(Exception e) {
+				Logger.log(LogLevel.Error, "please provide a filename for test data, has to be in subfolder sudokus");
+				System.exit(-1);
+			}
+			
+			
+		}
+
 		Logger.exit();
 	}
 
@@ -79,172 +140,5 @@ public class Main {
 				+ notSolvedCount + " sudokus\n");
 
 		return fvs;
-	}
-
-	public static void Hodoku() {
-		SudokuReader sr = null;
-		arffWriter aw = new arffWriter(Hodoku);
-		// easy
-		sr = new SudokuReader("hodoku-easy.txt");
-		ArrayList<Sudoku2> sudokusHodokuEasy = sr.read();
-		Logger.log(LogLevel.GeneralInformation, "classification: hodoku easy");
-		Logger.log(LogLevel.GeneralInformation, sudokusHodokuEasy.size()
-				+ " sudokus loaded.");
-		hodokuEasyVectors = getFeatureVectors(sudokusHodokuEasy);
-
-		// middle
-		sr = new SudokuReader("hodoku-middle.txt");
-		ArrayList<Sudoku2> sudokusHodokuMiddle = sr.read();
-		Logger.log(LogLevel.GeneralInformation, "classification: hodoku middle");
-		Logger.log(LogLevel.GeneralInformation, sudokusHodokuMiddle.size()
-				+ " sudokus loaded.");
-		hodokuMiddleVectors = getFeatureVectors(sudokusHodokuMiddle);
-
-		// hard
-		sr = new SudokuReader("hodoku-hard.txt");
-		ArrayList<Sudoku2> sudokusHodokuHard = sr.read();
-		Logger.log(LogLevel.GeneralInformation, "classification: hodoku hard");
-		Logger.log(LogLevel.GeneralInformation, sudokusHodokuHard.size()
-				+ " sudokus loaded.");
-		hodokuHardVectors = getFeatureVectors(sudokusHodokuHard);
-
-		// unfair
-		sr = new SudokuReader("hodoku-unfair.txt");
-		ArrayList<Sudoku2> sudokusHodokuUnfair = sr.read();
-		Logger.log(LogLevel.GeneralInformation, "classification: hodoku unfair");
-		Logger.log(LogLevel.GeneralInformation, sudokusHodokuUnfair.size()
-				+ " sudokus loaded.");
-		hodokuUnfairVectors = getFeatureVectors(sudokusHodokuUnfair);
-
-		// extreme
-		sr = new SudokuReader("hodoku-extreme.txt");
-		ArrayList<Sudoku2> sudokusHodokuExtreme = sr.read();
-		Logger.log(LogLevel.GeneralInformation,
-				"classification: hodoku extreme");
-		Logger.log(LogLevel.GeneralInformation, sudokusHodokuExtreme.size()
-				+ " sudokus loaded.");
-		hodokuExtremeVectors = getFeatureVectors(sudokusHodokuExtreme);
-		
-		classificatedVectors.put(Classification.hdkEasy, hodokuEasyVectors);
-		classificatedVectors.put(Classification.hdkMiddle,
-				hodokuMiddleVectors);
-		classificatedVectors.put(Classification.hdkHard, hodokuHardVectors);
-		classificatedVectors.put(Classification.hdkUnfair,
-				hodokuUnfairVectors);
-		classificatedVectors.put(Classification.hdkExtreme,
-				hodokuExtremeVectors);
-		
-		aw.writeToFile(classificatedVectors);
-		classificatedVectors.clear();
-	}
-	
-	public static void SoEinDing() {
-		SudokuReader sr = null;
-		arffWriter aw = new arffWriter(SoEinDing);
-		
-		// read sudokus generated by soEinDing (classification sehr einfach)
-		// from textfile
-		sr = new SudokuReader("sehrEinfach.txt");
-		ArrayList<Sudoku2> sudokusSoEinDingSehrEinfach = sr.readFromSoEinDing();
-
-		Logger.log(LogLevel.GeneralInformation,
-				"classification: soEinDing Sehr Einfach");
-		Logger.log(LogLevel.GeneralInformation,
-				sudokusSoEinDingSehrEinfach.size() + " sudokus loaded.");
-
-		soEinDingSehrEinfach = getFeatureVectors(sudokusSoEinDingSehrEinfach);
-
-		// read sudokus generated by soEinDing (classification einfach) from
-		// textfile
-		sr = new SudokuReader("einfach.txt");
-		ArrayList<Sudoku2> sudokusSoEinDingEinfach = sr.readFromSoEinDing();
-
-		Logger.log(LogLevel.GeneralInformation,
-				"classification: soEinDing Einfach");
-		Logger.log(LogLevel.GeneralInformation, sudokusSoEinDingEinfach.size()
-				+ " sudokus loaded.");
-
-		soEinDingEinfach = getFeatureVectors(sudokusSoEinDingEinfach);
-
-		// read sudokus generated by soEinDing (classification standard) from
-		// textfile
-		sr = new SudokuReader("standard.txt");
-		ArrayList<Sudoku2> sudokusSoEinDingStandard = sr.readFromSoEinDing();
-
-		Logger.log(LogLevel.GeneralInformation,
-				"classification: soEinDing Standard");
-		Logger.log(LogLevel.GeneralInformation, sudokusSoEinDingStandard.size()
-				+ " sudokus loaded.");
-
-		soEinDingStandard = getFeatureVectors(sudokusSoEinDingStandard);
-
-		// read sudokus generated by soEinDing (classification moderat) from
-		// textfile
-		sr = new SudokuReader("moderat.txt");
-		ArrayList<Sudoku2> sudokusSoEinDingModerat = sr.readFromSoEinDing();
-
-		Logger.log(LogLevel.GeneralInformation,
-				"classification: soEinDing Moderat");
-		Logger.log(LogLevel.GeneralInformation, sudokusSoEinDingModerat.size()
-				+ " sudokus loaded.");
-
-		soEinDingModerat = getFeatureVectors(sudokusSoEinDingModerat);
-
-		// read sudokus generated by soEinDing (classification anspruchsvoll)
-		// from textfile
-		sr = new SudokuReader("anspruchsvoll.txt");
-		ArrayList<Sudoku2> sudokusSoEinDingAnspruchsvoll = sr
-				.readFromSoEinDing();
-
-		Logger.log(LogLevel.GeneralInformation,
-				"classification: soEinDing Anspruchsvoll");
-		Logger.log(LogLevel.GeneralInformation,
-				sudokusSoEinDingAnspruchsvoll.size() + " sudokus loaded.");
-
-		soEinDingAnspruchsvoll = getFeatureVectors(sudokusSoEinDingAnspruchsvoll);
-
-		// read sudokus generated by soEinDing (classification sehr
-		// anspruchsvoll) from textfile
-		sr = new SudokuReader("sehrAnspruchsvoll.txt");
-		ArrayList<Sudoku2> sudokusSoEinDingSehrAnspruchsvoll = sr
-				.readFromSoEinDing();
-
-		Logger.log(LogLevel.GeneralInformation,
-				"classification: soEinDing Sehr Anspruchsvoll");
-		Logger.log(LogLevel.GeneralInformation,
-				sudokusSoEinDingSehrAnspruchsvoll.size() + " sudokus loaded.");
-
-		soEinDingSehrAnspruchsvoll = getFeatureVectors(sudokusSoEinDingSehrAnspruchsvoll);
-
-		// read sudokus generated by soEinDing (classification teuflisch)
-		// from
-		// textfile
-		sr = new SudokuReader("teuflisch.txt");
-		ArrayList<Sudoku2> sudokusSoEinDingTeuflisch = sr.readFromSoEinDing();
-
-		Logger.log(LogLevel.GeneralInformation,
-				"classification: soEinDing Teuflisch");
-		Logger.log(LogLevel.GeneralInformation,
-				sudokusSoEinDingTeuflisch.size() + " sudokus loaded.");
-
-		soEinDingTeuflisch = getFeatureVectors(sudokusSoEinDingTeuflisch);
-		
-		classificatedVectors.put(Classification.sedSehrEinfach,
-				soEinDingSehrEinfach);
-		classificatedVectors.put(Classification.sedEinfach,
-				soEinDingEinfach);
-		classificatedVectors.put(Classification.sedStandard,
-				soEinDingStandard);
-		classificatedVectors.put(Classification.sedModerat,
-				soEinDingModerat);
-		classificatedVectors.put(Classification.sedAnspruchsvoll,
-				soEinDingAnspruchsvoll);
-		classificatedVectors.put(Classification.sedSehrAnspruchsvoll,
-				soEinDingSehrAnspruchsvoll);
-		classificatedVectors.put(Classification.sedTeuflisch,
-				soEinDingTeuflisch);
-		
-		aw.writeToFile(classificatedVectors);
-		classificatedVectors.clear();
 	}
 }

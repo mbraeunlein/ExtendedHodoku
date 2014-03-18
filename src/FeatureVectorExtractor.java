@@ -618,7 +618,7 @@ public class FeatureVectorExtractor {
 				return true;
 			}
 		} catch (IllegalArgumentException e) {
-			Logger.log(LogLevel.Error, "ALS Argument Exception");
+			//Logger.log(LogLevel.Error, "ALS Argument Exception");
 		}
 
 		try {

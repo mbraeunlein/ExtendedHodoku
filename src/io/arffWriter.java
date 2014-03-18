@@ -7,10 +7,12 @@ import model.*;
 
 public class arffWriter {
 	private PrintWriter pw = null;
+	String filename = "";
 
 	public arffWriter(String file) {
 		try {
 			pw = new PrintWriter(file, "UTF-8");
+			filename = file;
 		} catch (FileNotFoundException | UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -18,13 +20,13 @@ public class arffWriter {
 	}
 
 	public void writeToFile(
-			HashMap<Classification, ArrayList<FeatureVector>> data) {
+			HashMap<String, ArrayList<FeatureVector>> data) {
 
 		// head part
 		pw.println("@RELATION sudoku");
 		pw.println();
 
-		Classification[] classifications = Classification.values();
+		Set<String> classifications = data.keySet();
 		Method[] methods = Method.values();
 
 		for (int m = 0; m < methods.length; m++) {
@@ -44,9 +46,10 @@ public class arffWriter {
 
 		pw.println();
 		pw.print("@ATTRIBUTE class {");
-		for (int c = 0; c < classifications.length; c++) {
-			pw.print(classifications[c]);
-			if (c != classifications.length - 1) {
+		Object[] tmpClas = classifications.toArray();
+		for (int c = 0; c < classifications.size(); c++) {
+			pw.print(tmpClas[c]);
+			if (c != tmpClas.length - 1) {
 				pw.print(",");
 			}
 		}
@@ -55,8 +58,8 @@ public class arffWriter {
 		// Data part
 		pw.println("@DATA");
 
-		for (int c = 0; c < classifications.length; c++) {
-			Classification classification = classifications[c];
+		for (int c = 0; c < tmpClas.length; c++) {
+			String classification = (String) tmpClas[c];
 			if (data.containsKey(classification)) {
 				ArrayList<FeatureVector> cData = data.get(classification);
 
@@ -69,10 +72,10 @@ public class arffWriter {
 		pw.flush();
 		pw.close();
 
-		Logger.log(LogLevel.GeneralInformation, "Wrote to arff file");
+		Logger.log(LogLevel.GeneralInformation, "Wrote to file " + filename);
 	}
 
-	private void writeFeatureVector(Classification c, FeatureVector fv) {
+	private void writeFeatureVector(String c, FeatureVector fv) {
 		Method[] methods = Method.values();
 
 		for (int m = 0; m < methods.length; m++) {
