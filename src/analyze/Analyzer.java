@@ -77,12 +77,34 @@ public class Analyzer {
 
 			// evaluate predicted class for every instance of the test file
 			for (int i = 0; i < test.numInstances(); i++) {
+				// the real class name
 				String origin = test.classAttribute().value(
 						(int) test.instance(i).classValue());
-				String classifiedAs = train.classAttribute().value(
+				// the estimated class name
+				String estimatedClass = train.classAttribute().value(
 						(int) cls.classifyInstance(test.instance(i)));
-				System.out.println(origin + " -> " + classifiedAs);
+				addResult(origin, estimatedClass);
 			}
+			
+			String resultString = "";
+
+			for (String origin : result.keySet()) {
+				System.out.println(origin);
+				int maxCount = -1;
+				String bestFittingClass = "";
+				for(String estimatedClass: result.get(origin).keySet()) {
+					int count = result.get(origin).get(estimatedClass);
+					System.out.println("\t" + estimatedClass + " -> " + count);
+					if(maxCount < count) {
+						maxCount = count;
+						bestFittingClass = estimatedClass;
+					}
+				}
+				resultString += origin + " -> " + bestFittingClass + "\n";
+			}
+
+			System.out.println(resultString);
+			
 
 		} catch (Exception e) {
 			e.printStackTrace();

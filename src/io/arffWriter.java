@@ -19,14 +19,13 @@ public class arffWriter {
 		}
 	}
 
-	public void writeToFile(
-			HashMap<String, ArrayList<FeatureVector>> data) {
-
+	public void writeToFile(HashMap<String, ArrayList<FeatureVector>> data,
+			Set<String> classes) {
 		// head part
 		pw.println("@RELATION sudoku");
 		pw.println();
 
-		Set<String> classifications = data.keySet();
+		Set<String> classifications = classes;
 		Method[] methods = Method.values();
 
 		for (int m = 0; m < methods.length; m++) {
@@ -73,6 +72,12 @@ public class arffWriter {
 		pw.close();
 
 		Logger.log(LogLevel.GeneralInformation, "Wrote to file " + filename);
+	}
+
+	public void writeToFile(HashMap<String, ArrayList<FeatureVector>> data) {
+
+		writeToFile(data, data.keySet());
+
 	}
 
 	private void writeFeatureVector(String c, FeatureVector fv) {
