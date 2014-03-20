@@ -86,8 +86,8 @@ public class Analyzer {
 				addResult(origin, estimatedClass);
 			}
 			
+			// build the result string and estimate mapping
 			String resultString = "";
-
 			for (String origin : result.keySet()) {
 				System.out.println(origin);
 				int maxCount = -1;
@@ -113,7 +113,7 @@ public class Analyzer {
 
 	private void loadTrainFile(String file) {
 		DataSource source;
-
+		
 		try {
 			source = new DataSource(file);
 			train = source.getDataSet();
