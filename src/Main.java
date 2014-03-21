@@ -22,6 +22,10 @@ public class Main {
 	static HashMap<String, ArrayList<Sudoku2>> trainSudokus = new HashMap<String, ArrayList<Sudoku2>>();
 	// maps class names to a list of test sudokus
 	static HashMap<String, ArrayList<Sudoku2>> testSudokus = new HashMap<String, ArrayList<Sudoku2>>();
+	// train keys in the right order
+	static ArrayList<String> trainKeys = new ArrayList<String>();
+	// test keys in the right order
+	static ArrayList<String> testKeys = new ArrayList<String>();
 
 	public static void main(String args[]) throws Exception {
 		// configure loffer
@@ -50,6 +54,7 @@ public class Main {
 			sr = new SudokuReader();
 			try {
 				trainSudokus = sr.read(args[1]);
+				trainKeys = sr.getKeys();
 			} catch (Exception e) {
 				Logger.log(LogLevel.Error,
 						"please provide a filename for training data, has to be in subfolder sudokus");
@@ -67,7 +72,7 @@ public class Main {
 			// write the feature vectors to an .arff file for possible later
 			// user processing
 			aw = new arffWriter(args[1].replace(".txt", ".arff"));
-			aw.writeToFile(classifiedTrainVectors);
+			aw.writeToFile(classifiedTrainVectors, trainKeys);
 
 			analyzer.crossValidation(args[1].replace(".txt", ".arff"));
 			System.exit(0);
@@ -77,6 +82,7 @@ public class Main {
 			sr = new SudokuReader();
 			try {
 				trainSudokus = sr.read(args[1]);
+				trainKeys = sr.getKeys();
 			} catch (Exception e) {
 				Logger.log(LogLevel.Error,
 						"please provide a filename for training data, has to be in subfolder sudokus");
@@ -94,7 +100,7 @@ public class Main {
 			// write the feature vectors to an .arff file for possible later
 			// user processing
 			aw = new arffWriter(args[1].replace(".txt", ".arff"));
-			aw.writeToFile(classifiedTrainVectors);
+			aw.writeToFile(classifiedTrainVectors, trainKeys);
 
 			analyzer.crossValidation(args[1].replace(".txt", ".arff"));
 			System.exit(0);
@@ -105,6 +111,7 @@ public class Main {
 				sr = new SudokuReader();
 				try {
 					trainSudokus = sr.read(args[1]);
+					trainKeys = sr.getKeys();
 				} catch (Exception e) {
 					Logger.log(LogLevel.Error,
 							"please provide a filename for training data, has to be in subfolder sudokus");
@@ -122,10 +129,11 @@ public class Main {
 				// write the feature vectors to an .arff file for possible later
 				// user processing
 				aw = new arffWriter(args[1].replace(".txt", ".arff"));
-				aw.writeToFile(classifiedTrainVectors);
+				aw.writeToFile(classifiedTrainVectors, trainKeys);
 
 				// load test file
 				testSudokus = sr.read(args[2]);
+				testKeys = sr.getKeys();
 
 				// extract feature vectors
 				for (String key : testSudokus.keySet()) {
@@ -138,7 +146,7 @@ public class Main {
 				// write the feature vectors to an .arff file for possible later
 				// user processing
 				aw = new arffWriter(args[2].replace(".txt", ".arff"));
-				aw.writeToFile(classifiedTrainVectors);
+				aw.writeToFile(classifiedTestVectors, testKeys);
 
 				analyzer.test(args[1].replace(".txt", ".arff"),
 						args[2].replace(".txt", ".arff"));
@@ -155,6 +163,7 @@ public class Main {
 				sr = new SudokuReader();
 				try {
 					trainSudokus = sr.read(args[1]);
+					trainKeys = sr.getKeys();
 				} catch (Exception e) {
 					Logger.log(LogLevel.Error,
 							"please provide a filename for training data, has to be in subfolder sudokus");
@@ -171,6 +180,7 @@ public class Main {
 
 				// load test file
 				testSudokus = sr.read(args[2]);
+				testKeys = sr.getKeys();
 
 				// extract feature vectors
 				for (String key : testSudokus.keySet()) {
@@ -187,12 +197,12 @@ public class Main {
 				// write the feature vectors to an .arff file for possible later
 				// user processing
 				aw = new arffWriter(args[1].replace(".txt", ".arff"));
-				aw.writeToFile(classifiedTrainVectors, classes);
+				aw.writeToFile(classifiedTrainVectors, trainKeys);
 
 				// write the feature vectors to an .arff file for possible later
 				// user processing
 				aw = new arffWriter(args[2].replace(".txt", ".arff"));
-				aw.writeToFile(classifiedTestVectors, classes);
+				aw.writeToFile(classifiedTestVectors, testKeys);
 
 				analyzer.mapClasses(args[2].replace(".txt", ".arff"),
 						args[1].replace(".txt", ".arff"));

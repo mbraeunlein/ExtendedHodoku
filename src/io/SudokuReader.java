@@ -7,8 +7,10 @@ import sudoku.Sudoku2;
 import io.Logger;
 
 public class SudokuReader {
+	private ArrayList<String> keys = new ArrayList<String>();
 	
 	public HashMap<String, ArrayList<Sudoku2>> read(String file) {
+		keys = new ArrayList<String>();
 		HashMap<String, ArrayList<Sudoku2>> sudokuMap = new HashMap<String, ArrayList<Sudoku2>>();
 		BufferedReader br = null;
 
@@ -43,6 +45,7 @@ public class SudokuReader {
 												+ sudokus.size() + " sudokus!!");
 						}
 						classification = line;
+						keys.add(file.replace(".txt", "") + "_" + classification);
 					}
 					line = br.readLine();
 				}
@@ -63,5 +66,10 @@ public class SudokuReader {
 		System.out.println();
 
 		return sudokuMap;
+	}
+	
+	public ArrayList<String> getKeys() {
+		return keys;
+		
 	}
 }

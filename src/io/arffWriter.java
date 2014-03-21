@@ -20,7 +20,7 @@ public class arffWriter {
 	}
 
 	public void writeToFile(HashMap<String, ArrayList<FeatureVector>> data,
-			Set<String> classes) {
+			Set<String> classes, ArrayList<String> keys) {
 		// head part
 		pw.println("@RELATION sudoku");
 		pw.println();
@@ -46,8 +46,8 @@ public class arffWriter {
 		pw.println();
 		pw.print("@ATTRIBUTE class {");
 		Object[] tmpClas = classifications.toArray();
-		for (int c = 0; c < classifications.size(); c++) {
-			pw.print(tmpClas[c]);
+		for (int c = 0; c < keys.size(); c++) {
+			pw.print(keys.get(c));
 			if (c != tmpClas.length - 1) {
 				pw.print(",");
 			}
@@ -74,9 +74,9 @@ public class arffWriter {
 		Logger.log(LogLevel.GeneralInformation, "Wrote to file " + filename);
 	}
 
-	public void writeToFile(HashMap<String, ArrayList<FeatureVector>> data) {
+	public void writeToFile(HashMap<String, ArrayList<FeatureVector>> data, ArrayList<String> keys) {
 
-		writeToFile(data, data.keySet());
+		writeToFile(data, data.keySet(), keys);
 
 	}
 

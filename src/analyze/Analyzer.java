@@ -34,9 +34,10 @@ public class Analyzer {
 			// evaluate the classifier
 			Evaluation eval = new Evaluation(train);
 			eval.crossValidateModel(tree, train, 10, new Random(1));
-
+			
 			// print the results
 			Logger.log(LogLevel.Classification, eval.toSummaryString());
+			System.out.println(eval.confusionMatrix());
 		} catch (Exception e) {
 			Logger.log(LogLevel.Error, e.toString());
 		}

@@ -1,0 +1,36 @@
+hodoku_extreme -> soEinDing_teuflisch
+hodoku_hard -> soEinDing_anspruchsvoll
+hodoku_middle -> soEinDing_moderat
+hodoku_easy -> soEinDing_standard
+hodoku_unfair -> soEinDing_teuflisch
+
+soEinDing_sehrEinfach -> hodoku_easy
+soEinDing_einfach -> hodoku_easy
+soEinDing_standard -> hodoku_easy
+soEinDing_moderat -> hodoku_middle
+soEinDing_anspruchsvoll -> hodoku_hard
+soEinDing_sehrAnspruchsvoll -> hodoku_hard
+soEinDing_teuflisch -> hodoku_extreme
+
+
+
+hodoku_extreme -> soEinDing_teuflisch
+soEinDing_teuflisch -> hodoku_extreme
+
+
+hodoku_hard -> soEinDing_anspruchsvoll
+soEinDing_anspruchsvoll -> hodoku_hard
+soEinDing_sehrAnspruchsvoll -> hodoku_hard
+
+
+hodoku_middle -> soEinDing_moderat
+soEinDing_moderat -> hodoku_middle
+
+
+hodoku_easy -> soEinDing_standard
+soEinDing_sehrEinfach -> hodoku_easy
+soEinDing_einfach -> hodoku_easy
+soEinDing_standard -> hodoku_easy
+
+
+hodoku_unfair -> soEinDing_teuflisch

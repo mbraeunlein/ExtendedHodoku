@@ -62,7 +62,7 @@ public class FeatureVectorExtractor {
 			Logger.log(LogLevel.SolvingMethods, steps.get(0).toString());
 			return true;
 		}
-
+/*
 		steps = sf.findAllNakedSingles(sudoku);
 		if (steps.size() > 0) {
 			sf.doStep(steps.get(0));
@@ -84,6 +84,7 @@ public class FeatureVectorExtractor {
 		// ----------------------------------------- //
 		// Locked Candidates //
 		// ----------------------------------------- //
+		
 		steps = sf.findAllLockedCandidates1(sudoku);
 		if (steps.size() > 0) {
 			sf.doStep(steps.get(0));
@@ -317,187 +318,6 @@ public class FeatureVectorExtractor {
 		}
 
 		// ----------------------------------------- //
-		// Finned Fishes //
-		// ----------------------------------------- //
-		/*
-		 * fishes = sf.getAllFishes(sudoku, 2, 7, 3, 0, null, -1, 0);
-		 * 
-		 * steps = filterByName("Finned X-Wing", fishes); if (steps.size() > 0)
-		 * { sf.doStep(steps.get(0)); sudoku = sf.getSudoku();
-		 * 
-		 * List<Candidate> candidates = steps.get(0).getCandidatesToDelete();
-		 * 
-		 * for (int i = 0; i < candidates.size(); i++) {
-		 * fv.addMethod(Method.FinnedXWing, candidates.get(i).getValue()); }
-		 * 
-		 * return true; }
-		 * 
-		 * steps = filterByName("Finned Jellyfish", fishes); if (steps.size() >
-		 * 0) { sf.doStep(steps.get(0)); sudoku = sf.getSudoku();
-		 * 
-		 * List<Candidate> candidates = steps.get(0).getCandidatesToDelete();
-		 * 
-		 * for (int i = 0; i < candidates.size(); i++) {
-		 * fv.addMethod(Method.FinnedJellyfish, candidates.get(i) .getValue());
-		 * }
-		 * 
-		 * return true; }
-		 * 
-		 * steps = filterByName("Finned Swordfish", fishes); if (steps.size() >
-		 * 0) { sf.doStep(steps.get(0)); sudoku = sf.getSudoku();
-		 * 
-		 * List<Candidate> candidates = steps.get(0).getCandidatesToDelete();
-		 * 
-		 * for (int i = 0; i < candidates.size(); i++) {
-		 * fv.addMethod(Method.FinnedSwordfish, candidates.get(i) .getValue());
-		 * }
-		 * 
-		 * return true; }
-		 */
-		// ----------------------------------------- //
-		// Sashimi Fishes //
-		// ----------------------------------------- //
-		/*
-		 * steps = filterByName("Sashimi X-Wing", fishes); if (steps.size() > 0)
-		 * { sf.doStep(steps.get(0)); sudoku = sf.getSudoku();
-		 * 
-		 * List<Candidate> candidates = steps.get(0).getCandidatesToDelete();
-		 * 
-		 * for (int i = 0; i < candidates.size(); i++) {
-		 * fv.addMethod(Method.SashimiXWing, candidates.get(i).getValue()); }
-		 * 
-		 * return true; }
-		 * 
-		 * steps = filterByName("Sashimi Jellyfish", fishes); if (steps.size() >
-		 * 0) { sf.doStep(steps.get(0)); sudoku = sf.getSudoku();
-		 * 
-		 * List<Candidate> candidates = steps.get(0).getCandidatesToDelete();
-		 * 
-		 * for (int i = 0; i < candidates.size(); i++) {
-		 * fv.addMethod(Method.SashimiJellyfish, candidates.get(i) .getValue());
-		 * }
-		 * 
-		 * return true; }
-		 * 
-		 * steps = filterByName("Sashimi Swordfish", fishes); if (steps.size() >
-		 * 0) { sf.doStep(steps.get(0)); sudoku = sf.getSudoku();
-		 * 
-		 * List<Candidate> candidates = steps.get(0).getCandidatesToDelete();
-		 * 
-		 * for (int i = 0; i < candidates.size(); i++) {
-		 * fv.addMethod(Method.SashimiSwordfish, candidates.get(i) .getValue());
-		 * }
-		 * 
-		 * return true; }
-		 */
-		// ----------------------------------------- //
-		// Uniqueness Test //
-		// ----------------------------------------- //
-		/*
-		 * steps = sf.getAllUniqueness(sudoku); steps =
-		 * filterByName("Uniqueness Test 1", steps); if (steps.size() > 0) {
-		 * sf.doStep(steps.get(0)); sudoku = sf.getSudoku();
-		 * 
-		 * List<Candidate> candidates = steps.get(0).getCandidatesToDelete();
-		 * 
-		 * for (int i = 0; i < candidates.size(); i++) {
-		 * fv.addMethod(Method.UniquenessTest1, candidates.get(i) .getValue());
-		 * }
-		 * 
-		 * return true; }
-		 * 
-		 * steps = filterByName("Uniqueness Test 2", steps); if (steps.size() >
-		 * 0) { sf.doStep(steps.get(0)); sudoku = sf.getSudoku();
-		 * 
-		 * List<Candidate> candidates = steps.get(0).getCandidatesToDelete();
-		 * 
-		 * for (int i = 0; i < candidates.size(); i++) {
-		 * fv.addMethod(Method.UniquenessTest2, candidates.get(i) .getValue());
-		 * }
-		 * 
-		 * return true; }
-		 * 
-		 * steps = filterByName("Uniqueness Test 3", steps); if (steps.size() >
-		 * 0) { sf.doStep(steps.get(0)); sudoku = sf.getSudoku();
-		 * 
-		 * List<Candidate> candidates = steps.get(0).getCandidatesToDelete();
-		 * 
-		 * for (int i = 0; i < candidates.size(); i++) {
-		 * fv.addMethod(Method.UniquenessTest3, candidates.get(i) .getValue());
-		 * }
-		 * 
-		 * return true; }
-		 * 
-		 * steps = filterByName("Uniqueness Test 4", steps); if (steps.size() >
-		 * 0) { sf.doStep(steps.get(0)); sudoku = sf.getSudoku();
-		 * 
-		 * List<Candidate> candidates = steps.get(0).getCandidatesToDelete();
-		 * 
-		 * for (int i = 0; i < candidates.size(); i++) {
-		 * fv.addMethod(Method.UniquenessTest4, candidates.get(i) .getValue());
-		 * }
-		 * 
-		 * return true; }
-		 * 
-		 * steps = filterByName("Uniqueness Test 5", steps); if (steps.size() >
-		 * 0) { sf.doStep(steps.get(0)); sudoku = sf.getSudoku();
-		 * 
-		 * List<Candidate> candidates = steps.get(0).getCandidatesToDelete();
-		 * 
-		 * for (int i = 0; i < candidates.size(); i++) {
-		 * fv.addMethod(Method.UniquenessTest5, candidates.get(i) .getValue());
-		 * }
-		 * 
-		 * return true; }
-		 * 
-		 * steps = filterByName("Uniqueness Test 6", steps); if (steps.size() >
-		 * 0) { sf.doStep(steps.get(0)); sudoku = sf.getSudoku();
-		 * 
-		 * List<Candidate> candidates = steps.get(0).getCandidatesToDelete();
-		 * 
-		 * for (int i = 0; i < candidates.size(); i++) {
-		 * fv.addMethod(Method.UniquenessTest6, candidates.get(i) .getValue());
-		 * }
-		 * 
-		 * return true; }
-		 * 
-		 * steps = filterByName("Hidden Rectangle", steps); if (steps.size() >
-		 * 0) { sf.doStep(steps.get(0)); sudoku = sf.getSudoku();
-		 * 
-		 * List<Candidate> candidates = steps.get(0).getCandidatesToDelete();
-		 * 
-		 * for (int i = 0; i < candidates.size(); i++) {
-		 * fv.addMethod(Method.HiddenRectangle, candidates.get(i) .getValue());
-		 * }
-		 * 
-		 * return true; }
-		 * 
-		 * steps = filterByName("Avoidable Rectangle Type 1", steps); if
-		 * (steps.size() > 0) { sf.doStep(steps.get(0)); sudoku =
-		 * sf.getSudoku();
-		 * 
-		 * List<Candidate> candidates = steps.get(0).getCandidatesToDelete();
-		 * 
-		 * for (int i = 0; i < candidates.size(); i++) {
-		 * fv.addMethod(Method.AvoidableRectangle1, candidates.get(i)
-		 * .getValue()); }
-		 * 
-		 * return true; }
-		 * 
-		 * steps = filterByName("Avoidable Rectangle Type 2", steps); if
-		 * (steps.size() > 0) { sf.doStep(steps.get(0)); sudoku =
-		 * sf.getSudoku();
-		 * 
-		 * List<Candidate> candidates = steps.get(0).getCandidatesToDelete();
-		 * 
-		 * for (int i = 0; i < candidates.size(); i++) {
-		 * fv.addMethod(Method.AvoidableRectangle2, candidates.get(i)
-		 * .getValue()); }
-		 * 
-		 * return true; }
-		 */
-
-		// ----------------------------------------- //
 		// Sue De Coq //
 		// ----------------------------------------- //
 		steps = sf.getAllSueDeCoqs(sudoku);
@@ -530,56 +350,7 @@ public class FeatureVectorExtractor {
 
 			return true;
 		}
-
-		/*
-		 * steps = sf.findAllMultiColors(sudoku); if (steps.size() > 0) {
-		 * sf.doStep(steps.get(0)); sudoku = sf.getSudoku();
-		 * 
-		 * List<Candidate> candidates = steps.get(0).getCandidatesToDelete();
-		 * 
-		 * for (int i = 0; i < candidates.size(); i++) {
-		 * fv.addMethod(Method.MultiColors, candidates.get(i).getValue()); }
-		 * 
-		 * return true; }
-		 */
-
-		// ----------------------------------------- //
-		// Chains //
-		// ----------------------------------------- //
-		/*
-		 * steps = sf.getAllChains(sudoku); List<SolutionStep> chains = new
-		 * ArrayList<SolutionStep>();
-		 * 
-		 * chains = filterByName("X-Chain", steps); if (chains.size() > 0) {
-		 * sf.doStep(chains.get(0)); sudoku = sf.getSudoku();
-		 * 
-		 * List<Candidate> candidates = chains.get(0).getCandidatesToDelete();
-		 * 
-		 * for (int i = 0; i < candidates.size(); i++) {
-		 * fv.addMethod(Method.XChain, candidates.get(i).getValue()); }
-		 * 
-		 * return true; }
-		 * 
-		 * chains = filterByName("XY-Chain", steps); if (chains.size() > 0) {
-		 * sf.doStep(chains.get(0)); sudoku = sf.getSudoku();
-		 * 
-		 * List<Candidate> candidates = chains.get(0).getCandidatesToDelete();
-		 * 
-		 * for (int i = 0; i < candidates.size(); i++) {
-		 * fv.addMethod(Method.XYChain, candidates.get(i).getValue()); }
-		 * 
-		 * return true; }
-		 * 
-		 * chains = filterByName("Remote Pairs", steps); if (chains.size() > 0)
-		 * { sf.doStep(chains.get(0)); sudoku = sf.getSudoku();
-		 * 
-		 * List<Candidate> candidates = chains.get(0).getCandidatesToDelete();
-		 * 
-		 * for (int i = 0; i < candidates.size(); i++) {
-		 * fv.addMethod(Method.RemotePairs, candidates.get(i).getValue()); }
-		 * 
-		 * return true; }
-		 */
+		
 		// ----------------------------------------- //
 		// Almost Locked Sets //
 		// ----------------------------------------- //
@@ -638,7 +409,7 @@ public class FeatureVectorExtractor {
 			}
 		} catch (IllegalArgumentException e) {
 			Logger.log(LogLevel.Error, "ALS Argument Exception");
-		}
+		}*/
 
 		return false;
 	}
