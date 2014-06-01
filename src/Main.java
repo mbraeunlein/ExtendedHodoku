@@ -3,6 +3,7 @@ import io.Logger;
 import io.SudokuReader;
 import io.arffWriter;
 
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -11,6 +12,7 @@ import java.util.Set;
 import analyze.Analyzer;
 import model.Classification;
 import model.FeatureVector;
+import model.Method;
 import model.Sudoku;
 import sudoku.*;
 
@@ -26,9 +28,12 @@ public class Main {
 	static ArrayList<String> trainKeys = new ArrayList<String>();
 	// test keys in the right order
 	static ArrayList<String> testKeys = new ArrayList<String>();
+	// count
+	private static double slvdCount = 0;
+	private static double notSlvdCount = 0;
 
 	public static void main(String args[]) throws Exception {
-		// configure loffer
+		// configure logger
 		Logger.addLogLevel(LogLevel.GeneralInformation);
 		Logger.addLogLevel(LogLevel.Error);
 		Logger.addLogLevel(LogLevel.Classification);
@@ -49,33 +54,8 @@ public class Main {
 
 		// analyze the data depending on the mode
 		switch (mode) {
-		case "write":
-			// load train sudokus
-			sr = new SudokuReader();
-			try {
-				trainSudokus = sr.read(args[1]);
-				trainKeys = sr.getKeys();
-			} catch (Exception e) {
-				Logger.log(LogLevel.Error,
-						"please provide a filename for training data, has to be in subfolder sudokus");
-				System.exit(-1);
-			}
-
-			// extract feature vectors
-			for (String key : trainSudokus.keySet()) {
-				ArrayList<Sudoku2> sudokus = trainSudokus.get(key);
-				Logger.log(LogLevel.GeneralInformation,
-						"Solving " + sudokus.size() + " sudokus of " + key);
-				classifiedTrainVectors.put(key, getFeatureVectors(sudokus));
-			}
-
-			// write the feature vectors to an .arff file for possible later
-			// user processing
-			aw = new arffWriter(args[1].replace(".txt", ".arff"));
-			aw.writeToFile(classifiedTrainVectors, trainKeys);
-
-			analyzer.crossValidation(args[1].replace(".txt", ".arff"));
-			System.exit(0);
+		case "tree":
+			analyzer.analyzeAttributes(args[1].replace(".txt", ".arff"));
 			break;
 		case "cross":
 			// load train sudokus
@@ -89,6 +69,7 @@ public class Main {
 				System.exit(-1);
 			}
 
+			
 			// extract feature vectors
 			for (String key : trainSudokus.keySet()) {
 				ArrayList<Sudoku2> sudokus = trainSudokus.get(key);
@@ -96,13 +77,19 @@ public class Main {
 						"Solving " + sudokus.size() + " sudokus of " + key);
 				classifiedTrainVectors.put(key, getFeatureVectors(sudokus));
 			}
-
+			
 			// write the feature vectors to an .arff file for possible later
 			// user processing
+			
 			aw = new arffWriter(args[1].replace(".txt", ".arff"));
 			aw.writeToFile(classifiedTrainVectors, trainKeys);
 
-			analyzer.crossValidation(args[1].replace(".txt", ".arff"));
+			analyzer.crossValidation(args[1].replace(".txt", ".arff"),
+					trainKeys);
+
+			double percentage = slvdCount / (slvdCount + notSlvdCount);
+			System.out.println("Solved: " + percentage + "%");
+
 			System.exit(0);
 			break;
 		case "test":
@@ -238,6 +225,9 @@ public class Main {
 				+ " sudokus");
 		Logger.log(LogLevel.GeneralInformation, "Couldn´t solve "
 				+ notSolvedCount + " sudokus\n");
+
+		slvdCount += solvedCount;
+		notSlvdCount += notSolvedCount;
 
 		return fvs;
 	}

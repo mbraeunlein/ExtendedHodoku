@@ -74,7 +74,8 @@ public class arffWriter {
 		Logger.log(LogLevel.GeneralInformation, "Wrote to file " + filename);
 	}
 
-	public void writeToFile(HashMap<String, ArrayList<FeatureVector>> data, ArrayList<String> keys) {
+	public void writeToFile(HashMap<String, ArrayList<FeatureVector>> data,
+			ArrayList<String> keys) {
 
 		writeToFile(data, data.keySet(), keys);
 
@@ -88,10 +89,9 @@ public class arffWriter {
 				pw.print(fv.getMethods().get(methods[m]).get(i) + ",");
 			}
 		}
-
-		for (int i = 0; i < 9; i++) {
-			pw.print(fv.numbers.get(i) + ",");
-		}
+		
+		for (int i = 0; i < 9; i++) { pw.print(fv.numbers.get(i) + ","); }
+		 
 
 		for (int i = 0; i < 9; i++) {
 			pw.print(fv.possibilities.get(i) + ",");

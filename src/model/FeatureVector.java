@@ -7,7 +7,7 @@ import java.util.Set;
 
 public class FeatureVector {
 	// Häufigkeitsverteilung
-	private HashMap<Method, HashMap<Integer, Integer>> methods = new HashMap<Method, HashMap<Integer, Integer>>();
+	public HashMap<Method, HashMap<Integer, Integer>> methods = new HashMap<Method, HashMap<Integer, Integer>>();
 	public ArrayList<Integer> numbers = new ArrayList<Integer>();
 	public ArrayList<Integer> possibilities = new ArrayList<Integer>();
 

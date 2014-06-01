@@ -1,3 +1,17 @@
+
+/*package model;
+
+public enum Method {
+	FullHouse, 
+	NakedSingles, 
+	LockedCandidates1, 
+	WWing, 
+	XYWing, 
+	ALSXZ, 
+	ALSXY;
+}
+*/
+
 package model;
 
 public enum Method {
@@ -12,5 +26,6 @@ public enum Method {
 	SueDeCoq,
 	SimpleColors, //MultiColors, // Coloring 
 	//XChain, XYChain, RemotePairs, // Chains
-	ALSXZ, ALSXY, ALSChains; // Almost Locked Sets
+	ALSXZ, ALSXY, ALSChains, // Almost Locked Sets
+	Backtracking;
 }

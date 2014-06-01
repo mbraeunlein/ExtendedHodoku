@@ -42,6 +42,12 @@ public class FeatureVectorExtractor {
 			while (cont) {
 				cont = step();
 			}
+
+			// add backtracking numbers
+			
+			for (int i = 1; i < 10; i++)
+				fv.addMethod(Method.Backtracking, 9 - sudoku.getCandidateCount(i));
+				
 		}
 
 		return fv;
@@ -54,6 +60,7 @@ public class FeatureVectorExtractor {
 		// ----------------------------------------- //
 		// Methods to fill in digits //
 		// ----------------------------------------- //
+		
 		steps = sf.findAllFullHouses(sudoku);
 		if (steps.size() > 0) {
 			sf.doStep(steps.get(0));
@@ -62,7 +69,7 @@ public class FeatureVectorExtractor {
 			Logger.log(LogLevel.SolvingMethods, steps.get(0).toString());
 			return true;
 		}
-/*
+		
 		steps = sf.findAllNakedSingles(sudoku);
 		if (steps.size() > 0) {
 			sf.doStep(steps.get(0));
@@ -80,11 +87,11 @@ public class FeatureVectorExtractor {
 			Logger.log(LogLevel.SolvingMethods, steps.get(0).toString());
 			return true;
 		}
-
+		
 		// ----------------------------------------- //
 		// Locked Candidates //
 		// ----------------------------------------- //
-		
+
 		steps = sf.findAllLockedCandidates1(sudoku);
 		if (steps.size() > 0) {
 			sf.doStep(steps.get(0));
@@ -94,6 +101,7 @@ public class FeatureVectorExtractor {
 			Logger.log(LogLevel.SolvingMethods, steps.get(0).toString());
 			return true;
 		}
+
 		steps = sf.findAllLockedCandidates2(sudoku);
 		if (steps.size() > 0) {
 			sf.doStep(steps.get(0));
@@ -103,7 +111,7 @@ public class FeatureVectorExtractor {
 			Logger.log(LogLevel.SolvingMethods, steps.get(0).toString());
 			return true;
 		}
-
+		
 		// ----------------------------------------- //
 		// Naked Subsets //
 		// ----------------------------------------- //
@@ -140,7 +148,7 @@ public class FeatureVectorExtractor {
 			}
 			return true;
 		}
-
+		
 		// ----------------------------------------- //
 		// Hidden Subsets //
 		// ----------------------------------------- //
@@ -177,7 +185,7 @@ public class FeatureVectorExtractor {
 			}
 			return true;
 		}
-
+		
 		// ----------------------------------------- //
 		// Wings //
 		// ----------------------------------------- //
@@ -188,17 +196,20 @@ public class FeatureVectorExtractor {
 
 			List<Candidate> candidates = steps.get(0).getCandidatesToDelete();
 			switch (steps.get(0).getStepName()) {
+			
 			case "W-Wing":
 
 				for (int i = 0; i < candidates.size(); i++) {
 					fv.addMethod(Method.WWing, candidates.get(i).getValue());
 				}
 				break;
+				
 			case "XY-Wing":
 				for (int i = 0; i < candidates.size(); i++) {
 					fv.addMethod(Method.XYWing, candidates.get(i).getValue());
 				}
 				break;
+				
 			case "XYZ-Wing":
 				for (int i = 0; i < candidates.size(); i++) {
 					fv.addMethod(Method.XYZWing, candidates.get(i).getValue());
@@ -208,7 +219,7 @@ public class FeatureVectorExtractor {
 
 			return true;
 		}
-
+		
 		// ----------------------------------------- //
 		// Single Digit Patterns //
 		// ----------------------------------------- //
@@ -225,7 +236,7 @@ public class FeatureVectorExtractor {
 
 			return true;
 		}
-
+		
 		steps = sf.findAllTwoStringKites(sudoku);
 		if (steps.size() > 0) {
 			sf.doStep(steps.get(0));
@@ -239,7 +250,7 @@ public class FeatureVectorExtractor {
 
 			return true;
 		}
-
+		
 		steps = sf.getAllChains(sudoku);
 		steps = filterByName("Turbot Fish", steps);
 		if (steps.size() > 0) {
@@ -254,7 +265,7 @@ public class FeatureVectorExtractor {
 
 			return true;
 		}
-
+		
 		steps = sf.findAllEmptyRectangles(sudoku);
 		if (steps.size() > 0) {
 			sf.doStep(steps.get(0));
@@ -269,7 +280,7 @@ public class FeatureVectorExtractor {
 
 			return true;
 		}
-
+		
 		// ----------------------------------------- //
 		// Fishes //
 		// ----------------------------------------- //
@@ -316,7 +327,7 @@ public class FeatureVectorExtractor {
 
 			return true;
 		}
-
+		
 		// ----------------------------------------- //
 		// Sue De Coq //
 		// ----------------------------------------- //
@@ -350,7 +361,7 @@ public class FeatureVectorExtractor {
 
 			return true;
 		}
-		
+
 		// ----------------------------------------- //
 		// Almost Locked Sets //
 		// ----------------------------------------- //
@@ -389,7 +400,7 @@ public class FeatureVectorExtractor {
 				return true;
 			}
 		} catch (IllegalArgumentException e) {
-			//Logger.log(LogLevel.Error, "ALS Argument Exception");
+			// Logger.log(LogLevel.Error, "ALS Argument Exception");
 		}
 
 		try {
@@ -402,14 +413,16 @@ public class FeatureVectorExtractor {
 						.getCandidatesToDelete();
 
 				for (int i = 0; i < candidates.size(); i++) {
-					fv.addMethod(Method.ALSChains, candidates.get(i).getValue());
+					//fv.addMethod(Method.ALSChains, candidates.get(i).getValue());
 				}
 
 				return true;
 			}
 		} catch (IllegalArgumentException e) {
 			Logger.log(LogLevel.Error, "ALS Argument Exception");
-		}*/
+		}
+		
+		
 
 		return false;
 	}
